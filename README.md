@@ -73,7 +73,7 @@ Returns aggregated data from the active sources.
 
 Query parameters:
 
-- `q`: keyword used by some data sources (default: `dotnet`)
+- `q`: keyword used by some data sources (default: ``)
 - `city`: city name for weather lookup (default: `Athens`)
 - `country`: country code for holiday lookup (default: `GR`)
 - `sources`: comma-separated source names, for example `OpenMeteo,Frankfurter`
