@@ -2,6 +2,7 @@ using ApiAggregator.Models;
 using ApiAggregator.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace ApiAggregator.Controllers;
 
@@ -11,9 +12,9 @@ namespace ApiAggregator.Controllers;
 public sealed class AggregationController(IAggregationService aggregation) : ControllerBase
 {
     /// <summary>Returns data aggregated from all external APIs, filtered and sorted.</summary>
-    /// <param name="q">Keyword for news and repositories (default "dotnet").</param>
+    /// <param name="q">Keyword for Holidays and Currency country (default "").</param>
     /// <param name="city">City for weather (default "Athens").</param>
-    /// <param name="sources">Comma separated source names, e.g. "GitHub,HackerNews".</param>
+    /// <param name="sources">Comma separated source names, e.g. "".</param>
     /// <param name="category">Weather, News or Repositories.</param>
     /// <param name="dateFrom">Only items on/after this date (ISO 8601).</param>
     /// <param name="dateTo">Only items on/before this date (ISO 8601).</param>
@@ -38,8 +39,8 @@ public sealed class AggregationController(IAggregationService aggregation) : Con
 
         var query = new AggregationQuery
         {
-            Keyword = string.IsNullOrWhiteSpace(q) ? "EUR" : q.Trim(),
-            City = string.IsNullOrWhiteSpace(city) ? "Athens" : city.Trim(),
+            Keyword = q?.Trim() ?? "",  
+            City = city?.Trim() ?? "", 
             Sources = (sources ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
             Category = category,
             From = dateFrom,
