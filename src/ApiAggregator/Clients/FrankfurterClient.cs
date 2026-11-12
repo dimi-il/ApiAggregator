@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Text.Json.Serialization;
 
+
 namespace ApiAggregator.Clients
 {
     public sealed class FrankfurterClient(HttpClient http) : IExternalApiClient
@@ -13,10 +14,31 @@ namespace ApiAggregator.Clients
 
         public async Task<IReadOnlyList<AggregatedItem>> FetchAsync(AggregationQuery query, CancellationToken cancellationToken)
         {
+            String url = "" ;
 
+
+            if (query.From.HasValue)
+            {
+                url = $"https://api.frankfurter.dev/v2/rates?date={Uri.EscapeDataString(query.From.Value.ToString("yyyy-MM-dd"))}";
+            }
+
+            else if (query.To.HasValue)
+            {
+                url = $"https://api.frankfurter.dev/v2/rates?date={Uri.EscapeDataString(string.Format("yyyy-MM-dd", query.To.Value.ToString()))}";
+            }
+
+            else if (query.Sources.Contains("Currency"))
+            {
+                url = $"https://api.frankfurter.dev/v2/rates?base={Uri.EscapeDataString(query.Keyword)}";
+            }
+
+            else {
+                url = $"https://api.frankfurter.dev/v2/rates?";
+            }
+            
             try
             {
-                var url = $"https://api.frankfurter.dev/v2/rates?base={Uri.EscapeDataString(string.Join(",", query.Keyword))}";
+
                 var response = await http.GetFromJsonAsync<IReadOnlyList<SearchResponse>>(url, cancellationToken);
 
                 var data = response?? throw new Exception("No data returned from Frankfurter API.");

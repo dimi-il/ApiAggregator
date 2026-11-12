@@ -1,5 +1,4 @@
 using ApiAggregator.Statistics;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiAggregator.Controllers;

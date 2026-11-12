@@ -38,10 +38,9 @@ public sealed class AggregationController(IAggregationService aggregation) : Con
 
         var query = new AggregationQuery
         {
-            Keyword = string.IsNullOrWhiteSpace(q) ? "dotnet" : q.Trim(),
+            Keyword = string.IsNullOrWhiteSpace(q) ? "EUR" : q.Trim(),
             City = string.IsNullOrWhiteSpace(city) ? "Athens" : city.Trim(),
-            Sources = (sources ?? string.Empty)
-                .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
+            Sources = (sources ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
             Category = category,
             From = dateFrom,
             To = dateTo,
