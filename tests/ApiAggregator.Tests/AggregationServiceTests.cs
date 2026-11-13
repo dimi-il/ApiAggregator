@@ -135,35 +135,24 @@ public class AggregationServiceTests
         Assert.Equal(2, client.Calls);
     }
 
-    [Fact]
-    public async Task Category_and_source_filters_skip_irrelevant_clients()
-    {
-        var Currency = FakeClient.Returning("ax", "Currency", Items.Make("ax", "Currency", "a", T0));
-        var weather = FakeClient.Returning("Wx", "Weather", Items.Make("Wx", "Weather", "w", T0));
-        var (service, _) = Create(new[] { Currency, weather });
-
-        var byCategory = await service.AggregateAsync(new AggregationQuery { Category = "weather" });
-        var bySource = await service.AggregateAsync(new AggregationQuery { Sources = new[] { "wx" } });
-
-        Assert.Equal("w", byCategory.Items.Single().Title);
-        Assert.Equal("w", bySource.Items.Single().Title);
-    }
+ 
 
     [Fact]
-    public async Task Filters_by_date_range()
+    public async Task Filters_by_year()
     {
         var (service, _) = Create(new[]
         {
-            FakeClient.Returning("A", "News",
-                Items.Make("A", "News", "old", T0),
-                Items.Make("A", "News", "mid", T0.AddDays(5)),
-                Items.Make("A", "News", "new", T0.AddDays(10)))
-        });
+        FakeClient.Returning("A", "News",
+            Items.Make("A", "News", "old", new DateTimeOffset(2025, 6, 1, 0, 0, 0, TimeSpan.Zero)),
+            Items.Make("A", "News", "mid", new DateTimeOffset(2026, 6, 1, 0, 0, 0, TimeSpan.Zero)),
+            Items.Make("A", "News", "new", new DateTimeOffset(2027, 6, 1, 0, 0, 0, TimeSpan.Zero)))
+    });
 
-        var result = await service.AggregateAsync(new AggregationQuery { From = T0.AddDays(1), To = T0.AddDays(9) });
+        var result = await service.AggregateAsync(new AggregationQuery { Year = 2026 });
 
         Assert.Equal(new[] { "mid" }, result.Items.Select(i => i.Title));
     }
+
 
     [Theory]
     [InlineData(SortField.Date, SortDirection.Desc, new[] { "c", "b", "a" })]
@@ -220,4 +209,6 @@ public class AggregationServiceTests
 
         Assert.Empty(stats.GetSnapshot());
     }
+
+
 }

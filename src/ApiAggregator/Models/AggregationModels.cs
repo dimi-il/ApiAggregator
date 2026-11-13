@@ -1,3 +1,6 @@
+using Microsoft.VisualBasic;
+using System.Globalization;
+
 namespace ApiAggregator.Models;
 
 public enum SortField { Date, Relevance, Title }
@@ -28,21 +31,10 @@ public sealed record AggregationResult( IReadOnlyList<AggregatedItem> Items,IRea
 public sealed record AggregationQuery
 {
     
-    /// <summary>Keyword used by the Currencies sources.</summary>
-    public string Keyword { get; init; } = "";
-
-    /// <summary>City used by the weather  ,Holidays  source.</summary>
     public string City { get; init; } = "";
-
-    /// <summary>Gets or initializes the category ex "Holidays,Weather,Currency".
-    public string? Category { get; init; } = "";
-
-
-    /// <summary>Restrict to these sources (empty = all) .</summary>
-    public IReadOnlyCollection<string> Sources { get; init; } = Array.Empty<string>();
-
-    public DateTimeOffset? From { get; init; }
-    public DateTimeOffset? To { get; init; }
+    public string Symbol { get; init; } = "";
+    public string CountryIsoCode { get; init; } = "";
+    public int Year { get; init; } = 0;
 
     public SortField SortBy { get; init; } = SortField.Date;
     public SortDirection Order { get; init; } = SortDirection.Desc;

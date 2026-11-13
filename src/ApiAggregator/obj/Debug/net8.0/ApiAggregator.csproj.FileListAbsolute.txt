@@ -59,6 +59,15 @@ C:\Users\Ilias\Documents\Api Aggregator\ApiAggregator\src\ApiAggregator\obj\Debu
 C:\Users\Ilias\Documents\Api Aggregator\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.pdb
 C:\Users\Ilias\Documents\Api Aggregator\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.genruntimeconfig.cache
 C:\Users\Ilias\Documents\Api Aggregator\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ref\ApiAggregator.dll
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.csproj.AssemblyReference.cache
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.AssemblyInfoInputs.cache
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.AssemblyInfo.cs
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.csproj.CoreCompileInputs.cache
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.sourcelink.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\appsettings.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\ApiAggregator.staticwebassets.endpoints.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\ApiAggregator.exe
@@ -96,15 +105,6 @@ C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.csproj.AssemblyReference.cache
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\rpswa.dswa.cache.json
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.AssemblyInfoInputs.cache
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.AssemblyInfo.cs
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.csproj.CoreCompileInputs.cache
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\ApiAggregator.sourcelink.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\rjimswa.dswa.cache.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
 C:\Users\Ilias\Documents\GitHub\ApiAggregator\src\ApiAggregator\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json

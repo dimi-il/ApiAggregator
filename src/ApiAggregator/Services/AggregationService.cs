@@ -12,12 +12,7 @@ public interface IAggregationService
     Task<AggregationResult> AggregateAsync(AggregationQuery query, CancellationToken cancellationToken = default);
 }
 
-public sealed class AggregationService(
-    IEnumerable<IExternalApiClient> clients,
-    IMemoryCache cache,
-    IApiStatsStore stats,
-    IOptions<AggregationOptions> options,
-    ILogger<AggregationService> logger) : IAggregationService
+public sealed class AggregationService(IEnumerable<IExternalApiClient> clients,IMemoryCache cache,IApiStatsStore stats,IOptions<AggregationOptions> options,ILogger<AggregationService> logger) : IAggregationService
 {
     private readonly IReadOnlyList<IExternalApiClient> _clients = clients.ToList();
     private readonly AggregationOptions _options = options.Value;
@@ -25,7 +20,7 @@ public sealed class AggregationService(
     public async Task<AggregationResult> AggregateAsync(AggregationQuery query, CancellationToken cancellationToken = default)
     {
         // Only call the APIs that can contribute to this request (source / category filters).
-        var selected = _clients.Where(c => IsSelected(c, query)).ToList();
+        var selected = _clients.ToList();
 
         // Parallelism: all selected APIs are called at the same time; FetchSourceAsync never throws
         // (except on cancellation), so one failing API cannot fail the whole request.
@@ -39,8 +34,7 @@ public sealed class AggregationService(
         return new AggregationResult(sorted, results.Select(r => r.Status).ToList(), sorted.Count);
     }
 
-    private async Task<(IReadOnlyList<AggregatedItem> Items, SourceStatus Status)> FetchSourceAsync(
-        IExternalApiClient client, AggregationQuery query, CancellationToken cancellationToken)
+    private async Task<(IReadOnlyList<AggregatedItem> Items, SourceStatus Status)> FetchSourceAsync(IExternalApiClient client, AggregationQuery query, CancellationToken cancellationToken)
     {
         var key = client.CacheKey(query);
         var freshKey = $"fresh:{key}";
@@ -80,22 +74,18 @@ public sealed class AggregationService(
                 return (stale, new SourceStatus(client.Name, SourceState.Stale, stopwatch.ElapsedMilliseconds, ex.Message));
             }
 
-            return (Array.Empty<AggregatedItem>(),
-                new SourceStatus(client.Name, SourceState.Failed, stopwatch.ElapsedMilliseconds, ex.Message));
+            return (Array.Empty<AggregatedItem>(),new SourceStatus(client.Name, SourceState.Failed, stopwatch.ElapsedMilliseconds, ex.Message));
         }
     }
 
-    private static bool IsSelected(IExternalApiClient client, AggregationQuery query) =>
-        (query.Sources.Count == 0 || query.Sources.Contains(client.Name, StringComparer.OrdinalIgnoreCase)) &&
-        (string.IsNullOrWhiteSpace(query.Category) ||
-         string.Equals(client.Category, query.Category, StringComparison.OrdinalIgnoreCase));
+
 
     private static IEnumerable<AggregatedItem> ApplyFilters(IEnumerable<AggregatedItem> items, AggregationQuery query)
     {
-        if (query.From is { } from) items = items.Where(i => i.Date >= from);
-        if (query.To is { } to) items = items.Where(i => i.Date <= to);
-        if (!string.IsNullOrWhiteSpace(query.Category))
-            items = items.Where(i => string.Equals(i.Category, query.Category, StringComparison.OrdinalIgnoreCase));
+    
+
+        if (query.Year is { } year) items = items.Where(i => i.Date.Year == year);
+        
         return items;
     }
 

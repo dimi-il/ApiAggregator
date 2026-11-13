@@ -1,8 +1,18 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "ApiAggregator",
-    "version": "1.0"
+    "title": "Aggregation API",
+    "description": "An API aggregation service that consolidates data from multiple external APIs and provides a unified endpoint to access the aggregated information",
+    "termsOfService": "https://localhost:41205/terms",
+    "contact": {
+      "name": "email Contact",
+      "url": "mailto:tarmac@outlook.com.gr"
+    },
+    "license": {
+      "name": "Apache License",
+      "url": "https://apache.org"
+    },
+    "version": "v1.0"
   },
   "paths": {
     "/api/aggregate": {
@@ -12,13 +22,6 @@
         ],
         "parameters": [
           {
-            "name": "q",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "city",
             "in": "query",
             "schema": {
@@ -26,33 +29,25 @@
             }
           },
           {
-            "name": "sources",
+            "name": "symbol",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "category",
+            "name": "countrycode",
             "in": "query",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "from",
+            "name": "year",
             "in": "query",
             "schema": {
-              "type": "string",
-              "format": "date-time"
-            }
-          },
-          {
-            "name": "to",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
+              "type": "integer",
+              "format": "int32"
             }
           },
           {

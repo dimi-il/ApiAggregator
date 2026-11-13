@@ -2,6 +2,7 @@ using ApiAggregator.Models;
 using ApiAggregator.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace ApiAggregator.Controllers;
@@ -14,37 +15,30 @@ public sealed class AggregationController(IAggregationService aggregation) : Con
     /// <summary>Returns data aggregated from all external APIs, filtered and sorted.</summary>
     /// <param name="q">Keyword for Holidays and Currency country (default "").</param>
     /// <param name="city">City for weather (default "Athens").</param>
-    /// <param name="sources">Comma separated source names, e.g. "".</param>
-    /// <param name="category">Weather, News or Repositories.</param>
-    /// <param name="dateFrom">Only items on/after this date (ISO 8601).</param>
-    /// <param name="dateTo">Only items on/before this date (ISO 8601).</param>
     /// <param name="sortBy">Date (default), Relevance or Title.</param>
     /// <param name="order">Asc or Desc (default).</param>
     [HttpGet]
     [ProducesResponseType(typeof(AggregationResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AggregationResult>> Get(
-        [FromQuery] string? q,
+        //[FromQuery] string? q,
         [FromQuery] string? city,
-        [FromQuery] string? sources,
-        [FromQuery] string? category,
-        [FromQuery(Name = "from")] DateTimeOffset? dateFrom,
-        [FromQuery(Name = "to")] DateTimeOffset? dateTo,
+        [FromQuery] string? symbol,
+        [FromQuery] string? countrycode,
+        [FromQuery] int? year,
         [FromQuery] SortField sortBy = SortField.Date,
         [FromQuery] SortDirection order = SortDirection.Desc,
         CancellationToken cancellationToken = default)
     {
-        if (dateFrom is not null && dateTo is not null && dateFrom > dateTo)
-            return BadRequest(new ProblemDetails { Title = "'from' must not be later than 'to'." });
-
+        /// before year 2024 is invalid selection for Nager holiday and cause error 500 
+       
+   
         var query = new AggregationQuery
         {
-            Keyword = q?.Trim() ?? "",  
-            City = city?.Trim() ?? "", 
-            Sources = (sources ?? string.Empty).Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries),
-            Category = category,
-            From = dateFrom,
-            To = dateTo,
+            City =  string.IsNullOrEmpty(city) ? "Athens" : city.Trim(),
+            Symbol = string.IsNullOrEmpty(symbol) ? "EUR" : symbol.Trim(),
+            CountryIsoCode = string.IsNullOrEmpty(countrycode) ? "GR" : countrycode.Trim(),
+            Year = year ?? DateTime.Now.Year,
             SortBy = sortBy,
             Order = order
         };

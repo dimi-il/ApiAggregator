@@ -1,10 +1,12 @@
-using System.Text.Json.Serialization;
 using ApiAggregator.Background;
 using ApiAggregator.Clients;
 using ApiAggregator.Infrastructure;
 using ApiAggregator.Models;
 using ApiAggregator.Services;
 using ApiAggregator.Statistics;
+using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
+using static System.Net.WebRequestMethods;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +22,7 @@ builder.Services.AddControllers()
 
 ////  Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 //// ---- Core services ----
 builder.Services.AddSingleton(TimeProvider.System);
@@ -36,18 +38,39 @@ builder.Services.AddExternalApiClient<OpenMeteoClient>();
 builder.Services.AddExternalApiClient<NagerholidaysClient>();
 builder.Services.AddExternalApiClient<FrankfurterClient>();
 
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1.0",
+        Title = "Aggregation API",
+        Description = "An API aggregation service that consolidates data from multiple external APIs and provides a unified endpoint to access the aggregated information",
+        TermsOfService = new Uri("https://localhost:41205/terms"),
+        Contact = new OpenApiContact
+        {
+            Name = "email Contact",
+            Url = new Uri("mailto:tarmac@outlook.com.gr")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Apache License",
+            Url = new Uri("https://apache.org")
+        }
+    });
+});
 
 
 var app = builder.Build();
 
-
-
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        options.RoutePrefix = string.Empty;
+    });
+}
 
 app.MapControllers();
 

@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using ApiAggregator.Models;
 
+
 namespace ApiAggregator.Clients;
 
 /// <summary>Weather from Open-Meteo (free, no API key). Two calls: geocoding, then forecast.</summary>
@@ -11,10 +12,11 @@ public sealed class OpenMeteoClient(HttpClient http) : IExternalApiClient
     public string Name => "OpenMeteo";
     public string Category => "Weather";
 
-    public string CacheKey(AggregationQuery query) => $"openmeteo:{query.Keyword}";
+    public string CacheKey(AggregationQuery query) => $"openmeteo:{query.City.Trim()}:{DateTime.Now.AddMinutes(15)}";
 
     public async Task<IReadOnlyList<AggregatedItem>> FetchAsync(AggregationQuery query, CancellationToken cancellationToken)
     {
+
         var geoUrl = $"https://geocoding-api.open-meteo.com/v1/search?name={Uri.EscapeDataString(query.City)}&count=1";
         var geo = await http.GetFromJsonAsync<GeoResponse>(geoUrl, cancellationToken);
         var place = geo?.Results?.FirstOrDefault();
@@ -24,16 +26,11 @@ public sealed class OpenMeteoClient(HttpClient http) : IExternalApiClient
         var forecast = await http.GetFromJsonAsync<ForecastResponse>(forecastUrl, cancellationToken);
         var current = forecast?.Current;
         
-        query = query with { Keyword = place.country_code };
-
         if (current is null) return Array.Empty<AggregatedItem>();
 
-        var date = DateTimeOffset.TryParse(current.Time, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var parsed)
-            ? parsed
-            : DateTimeOffset.UtcNow;
+        var date = DateTimeOffset.TryParse(current.Time, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out var parsed)? parsed : DateTimeOffset.UtcNow;
 
-        var description = FormattableString.Invariant(
-            $"{current.Temperature:0.#}°C, wind {current.WindSpeed:0.#} km/h, humidity {current.Humidity:0.#}%");
+        var description = FormattableString.Invariant($"{current.Temperature:0.#}°C, wind {current.WindSpeed:0.#} km/h, humidity {current.Humidity:0.#}%");
 
         return new[] { new AggregatedItem(Name, Category, $"Current weather in {place.Name}", description,"https://open-meteo.com/", date, 1.0) };
     }

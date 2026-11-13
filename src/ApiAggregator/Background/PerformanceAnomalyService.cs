@@ -1,13 +1,11 @@
 using ApiAggregator.Models;
 using Microsoft.Extensions.Options;
 
+
 namespace ApiAggregator.Background;
 
 /// <summary>Runs the anomaly detector periodically and logs a warning per anomaly.</summary>
-public sealed class PerformanceAnomalyService(
-    PerformanceAnomalyDetector detector,
-    IOptions<AnomalyOptions> options,
-    ILogger<PerformanceAnomalyService> logger) : BackgroundService
+public sealed class PerformanceAnomalyService(PerformanceAnomalyDetector detector,IOptions<AnomalyOptions> options,ILogger<PerformanceAnomalyService> logger) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
